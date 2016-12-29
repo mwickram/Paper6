@@ -1,0 +1,54 @@
+
+par R=1000, Ch=1600, c=0.001,a=0.3, b=6e-5, gamma=0.013,gamma1=0.013 Aa=0.008, Cda=1, Cdc=1,Ac=1e-4
+par f=41.0076,Frd=96485.34, 
+#park1=1.9e-7, k_1=1.11e-8, k2=2.15e-11, k3=5.8e-10, k4=3.75e-9, 
+par beta1=0.5
+par beta2=0.6,beta4=0.74,sc=0.1
+parin r_1=4e-5 r2=5e-6, r3=5e-4, r4=4e-4
+
+init theta=0.5, ea=-0.4, V=2.6 thetahad=0.5, ec=0.4
+
+V'=sc
+
+ja=Ch*exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))+a*exp(ea)*(1-theta)
+
+ea'=((V-(ea-ec))/Aa/R-ja)/Cda
+
+theta'=(exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))-b*Ch*exp(2*ea)*theta/(c*Ch+exp(ea)))/gamma
+
+k1=r1/(Ch*(1-thetahad)*exp(-(1-beta1)*f*ec))
+
+k_1=r_1/(thetahad*exp(beta1*f*ec))
+
+k2=r2/(Ch*thetahad*exp(-(1-beta2)*f*ec))
+
+k3=r3/thetahad^2
+
+k4=r4/((1-thetahad)*exp(beta4*f*ec))
+
+thetahad'=(r1-r_1-r2-r3)/gamma1
+
+#thetahad'=(r1)/gamma1
+
+jc=-1*Frd*(2*r4-r1+r_1-r2)
+
+#jc=-1*Frd*(-r1)
+
+ec'=(-(V-(ea-ec))/Ac/R-jc)/Cdc
+
+aux Curr=(V-(ea-ec))/R
+aux kr1=k1
+#aux kr_1=k_1
+aux kr2=k2
+aux kr3=k3
+#aux kr4=k4
+
+@TOTAL=100,DT=.1,method=Qualst.RK4,toler=0.00001
+@atoler=0.001,bound=10000
+#@njmp2
+@MAXSTOR=10000000000
+
+
+
+
+

@@ -1,0 +1,32 @@
+
+par carea=0.1,R=2.5,V=30.2,Ch=1600,aarea=1,a=0.3, b=6e-5, c=0.001, gamma=0.01
+
+par Co=0.514,ep=1, beta1=0.5, beta2=0.6, beta4=0.74, aa=0.335, bb=1.132e-4 g=0.0523
+
+
+init theta=0.8, ea=-2,thetah=0.99, ec=-27 
+
+ea'=(V-ea+ec)/aarea/R-ja
+
+ja=Ch*exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))+a*exp(ea)*(1-theta)
+
+theta'=(exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))-b*Ch*exp(2*ea)*theta/(c*Ch+exp(ea)))/gamma
+
+
+
+ec'=-(V-ea+ec)/carea/R-ep*(jc)
+
+jc=2*aa*(1-thetah)*exp(beta4*ec)-Co*(1-thetah)*exp(-(1-beta1)*ec)+thetah*exp(beta1*ec)-bb*Co*thetah*exp(-(1-beta2)*ec)
+
+thetah'=(1-thetah)*Co*exp(-(1-beta1)*ec)-thetah*exp(beta1*ec)-bb*Co*thetah*exp(-(1-beta2)*ec)-g*thetah^2 
+
+
+aux Curr=(V-(ea-ec))/R
+aux cas=ea-ec
+
+
+@ total=200,DT=.01,method=gear,toler=0.00001
+@ atoler=0.001,bound=10000
+
+@ maxstor=10000000
+done

@@ -1,0 +1,41 @@
+
+par R=5, Ch=1600, c=0.001,a=0.3, b=6e-5, gamma=0.013,gamma1=0.013 Aa=0.008, Cda=1, Cdc=1,Ac=30, vo=-10
+par f=41.007, Frd=96485.34
+par k1=2e-17, k_1=1e-18, k2=2e-21, k3=6.1e-19, k4=4.1e-18
+par beta1=0.5, beta2=0.5,beta4=0.5,sc=0.1
+#par r1=4e-4; r_1=4e-5 r2=5e-6, r3=5e-4, r4=4e-4
+
+init theta=0.5, ea=0.1, thetahad=0.5, ec=-0.1
+
+V=vo+sc*t
+
+ja=Ch*exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))+a*exp(ea)*(1-theta)
+
+ea'=((V-(ea-ec))/Aa/R-ja)/Cda
+
+theta'=(exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))-b*Ch*exp(2*ea)*theta/(c*Ch+exp(ea)))/gamma
+
+ec'=(-(V-(ea-ec))/Ac/R-jc)/Cdc
+U-boat
+
+jc=-Frd*(2*k4*(1-thetahad)*exp(beta4*ec*f)-k1*Ch*(1-thetahad)*exp(-(1-beta1)*ec*f)+k_1*thetahad*exp(beta1*ec*f)-k2*thetahad*Ch*exp(-(1-beta2)*ec*f))
+
+thetahad'=(k1*Ch*(1-thetahad)*exp(-(1-beta1)*f*ec)-k_1*thetahad*exp(beta1*f*ec)-k2*Ch*thetahad*exp(-(1-beta2)*f*ec)-k3*thetahad^2)/gamma1
+
+
+
+
+aux Curr=(V-(ea-ec))/R
+aux Vol=V
+
+
+@TOTAL=120,DT=.01,method=Qualst.RK4,toler=0.00001
+@atoler=0.001,bound=10000
+@MAXSTOR=10000000000
+
+
+#trasient=70
+
+
+
+

@@ -1,0 +1,34 @@
+
+par R=200, Ch=1600, c=0.001,a=0.3,b=6e-5, gamma=0.013,Aa=0.01, Cda=1, Cdc=1,vo=0,f=41.0076,Frd=96485.34, sc=0.1,rt=4.45e-4
+par dm=1e-2
+
+init theta=0.5, ea=-5, ec=5
+
+Ac=dm*Aa
+
+V=vo+sc*t
+
+ja=Ch*exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))+a*exp(ea)*(1-theta)
+
+ea'=((V-(ea-ec))/Aa/R-ja)/Cda
+
+theta'=(exp(0.5*ea)*(1-theta)/(1+Ch*exp(ea))-b*Ch*exp(2*ea)*theta/(c*Ch+exp(ea)))/gamma
+
+jc=-Frd*rt 
+
+ec'=(-(V-(ea-ec))/Ac/R-jc)/Cdc
+
+aux Curr=(V-(ea-ec))/R
+
+
+
+@TOTAL=800,DT=.05,method=Qualst.RK4,toler=0.00001
+@atoler=0.001,bound=10000
+@MAXSTOR=10000000000
+
+#traseint 600
+
+
+
+
+

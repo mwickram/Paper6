@@ -1,0 +1,25 @@
+par sr=-0.001, C=0.514, carea=20, r=0.01, ep=1, beta1=0.5, beta2=0.6, beta4=0.74, a=0.335, b=1.132e-4 g=0.0523, alpha=1000
+
+int v=0,theta=0.3, ec=-0.1
+
+v'=sr
+
+ec'=alpha*((v-ec)/carea/r-ep*jc)
+
+jc=2*a*(1-theta)*exp(beta4*ec)-C*(1-theta)*exp(-(1-beta1)*ec)+theta*exp(beta1*ec)-b*C*theta*exp(-(1-beta2)*ec)
+
+theta'=alpha*((1-theta)*C*exp(-(1-beta1)*ec)-theta*exp(beta1*ec)-b*C*theta*exp(-(1-beta2)*ec)-g*theta^2) 
+
+
+aux curr=(v-ec)/r
+aux currd=(v-ec)/carea/r
+aux Tof=ln(abs((v-ec)/carea/r))
+
+
+@ total=27000,DT=.01,method=gear,toler=1e-5
+@ atoler=0.001,bound=100000
+@ maxstor=10000000
+
+done
+
+
